@@ -73,3 +73,8 @@ Python backend development
 Flask fundamentals
 Frontend integration
 Generative AI concepts (template‑based generation)
+
+
+👨‍💻 Author
+
+Maycol Michel Mohr with AI GENERATIVE(COPILOT).
