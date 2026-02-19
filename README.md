@@ -21,6 +21,9 @@ This project was created to practice:
 
 ---
 
+
+![App Screenshot](image/aiappjoke.png)
+
 ## 🛠️ Tech Stack
 - **Python 3**
 - **Flask**
