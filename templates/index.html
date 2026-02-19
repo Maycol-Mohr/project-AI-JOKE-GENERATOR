@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generador de Chistes con IA</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 Generador de Chistes con IA</h1>
+    <p class="subtitle">Escribe un tema y deja que la “IA” te saque una sonrisa 😄</p>
+
+    <div class="layout">
+      <!-- Panel izquierdo -->
+      <div class="card">
+        <div class="form-wrap">
+          <label for="tema" class="label">Tema</label>
+          <input id="tema" type="text" placeholder="Ej: programación, perros, colegio, café..." />
+          <button id="btn-generar">Generar chiste</button>
+        </div>
+      </div>
+
+      <!-- Resultado a la derecha -->
+      <div id="resultado" class="result" hidden>
+        <h2>Tu chiste</h2>
+        <p id="texto-chiste"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById("tema");
+    const btn = document.getElementById("btn-generar");
+    const resultado = document.getElementById("resultado");
+    const texto = document.getElementById("texto-chiste");
+
+    async function generar() {
+      const tema = input.value.trim();
+      btn.disabled = true;
+      btn.textContent = "Generando...";
+
+      try {
+        const res = await fetch("/api/chiste", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tema })
+        });
+
+        if (!res.ok) {
+          throw new Error("Error en la respuesta del servidor");
+        }
+
+        const data = await res.json();
+        texto.textContent = data.chiste || "No se pudo generar el chiste.";
+        resultado.hidden = false;
+      } catch (err) {
+        texto.textContent = "Ups, algo salió mal. Intenta otra vez.";
+        resultado.hidden = false;
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Generar chiste";
+      }
+    }
+
+    btn.addEventListener("click", generar);
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") generar(); });
+  </script>
+</body>
+</html>
